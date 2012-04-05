@@ -2,10 +2,10 @@ griffon.project.dependency.resolution = {
     inherits("global") 
     log "warn" 
     repositories {
-        griffonPlugins()
         griffonHome()
-        griffonCentral()
-        flatDir name: 'jtreemapPluginLib', dirs: 'lib'
+        // pluginDirPath is only available when installed
+        String basePath = pluginDirPath? "${pluginDirPath}/" : ''
+        flatDir name: "jtreemapLibDir", dirs: ["${basePath}lib"]
     }
     dependencies {
         compile 'net.sf.jtreemap:jtreemap:1.1.0'
@@ -20,7 +20,16 @@ griffon {
     }
 }
 
-griffon.jars.destDir='target/addon'
-griffon.plugin.pack.additional.sources = ['src/gdsl']
+log4j = {
+    // Example of changing the log pattern for the default console
+    // appender:
+    appenders {
+        console name: 'stdout', layout: pattern(conversionPattern: '%d [%t] %-5p %c - %m%n')
+    }
 
-//griffon.jars.jarName='JtreemapGriffonAddon.jar'
+    error 'org.codehaus.griffon',
+          'org.springframework',
+          'org.apache.karaf',
+          'groovyx.net'
+    warn  'griffon'
+}
