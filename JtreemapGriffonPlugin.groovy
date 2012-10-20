@@ -19,11 +19,11 @@
  */
 class JtreemapGriffonPlugin {
     // the plugin version
-    String version = '0.5'
+    String version = '1.0.0'
     // the version or versions of Griffon the plugin is designed for
-    String griffonVersion = '0.9.5 > *'
+    String griffonVersion = '1.0.0 > *'
     // the other plugins this plugin depends on
-    Map dependsOn = [swing: '0.9.5']
+    Map dependsOn = [swing: '1.0.0']
     // resources that are included in plugin packaging
     List pluginIncludes = []
     // the plugin license
@@ -82,36 +82,32 @@ You can then reference the treemap node from your controller and set the tree no
 
 __Controller__
 
-        import net.sf.jtreemap.swing.JTreeMap;
-        import net.sf.jtreemap.swing.TreeMapNode;
-        import net.sf.jtreemap.swing.TreeMapNodeBuilder;
-        import net.sf.jtreemap.swing.ValuePercent;
- 
+        import net.sf.jtreemap.swing.JTreeMap
+        import net.sf.jtreemap.swing.TreeMapNode
+        import net.sf.jtreemap.swing.TreeMapNodeBuilder
+        import net.sf.jtreemap.swing.ValuePercent
+
         class SampleController {
-            // these will be injected by Griffon
-            def model
             def view
- 
+
             def chooseFile = {
                 TreeMapNode root = null
-   
-                doOutside {
-                  TreeMapNodeBuilder builder = new TreeMapNodeBuilder()
- 
-                  TreeMapNode continentEurope = builder.buildBranch("Europe", null)
-                  TreeMapNode countryCH = builder.buildBranch("Switzerland", continentEurope)
-           
-                  builder.buildLeaf("Basel", 120, new ValuePercent(120 / 110), countryCH)
-                  builder.buildLeaf("Zuerich", 200, new ValuePercent(200 / 240), countryCH)
- 
-                  TreeMapNode countryDE = builder.buildBranch("Germany", continentEurope)
-                  builder.buildLeaf("Bayern", 300, new ValuePercent(300 / 200), countryDE)
- 
-                  root = builder.root
-    
-                  edt {
+
+                TreeMapNodeBuilder builder = new TreeMapNodeBuilder()
+
+                TreeMapNode continentEurope = builder.buildBranch("Europe", null)
+                TreeMapNode countryCH = builder.buildBranch("Switzerland", continentEurope)
+
+                builder.buildLeaf("Basel", 120, new ValuePercent(120 / 110), countryCH)
+                builder.buildLeaf("Zuerich", 200, new ValuePercent(200 / 240), countryCH)
+
+                TreeMapNode countryDE = builder.buildBranch("Germany", continentEurope)
+                builder.buildLeaf("Bayern", 300, new ValuePercent(300 / 200), countryDE)
+
+                root = builder.root
+
+                execInsideUISync {
                     view.hackergartenTreeMap.root = root
-                  }
                 }
             }
         }
